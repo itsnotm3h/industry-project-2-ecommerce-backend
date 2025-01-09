@@ -51,6 +51,14 @@ CREATE TABLE products (
     product_stock INT UNSIGNED
 );
 
+CREATE category (
+
+);
+
+CREATE product_category (
+    
+);
+
 CREATE TABLE orders (
     order_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     product_id INT UNSIGNED NOT NULL,
@@ -107,3 +115,7 @@ CREATE TABLE promo_code (
     promo_limit INT,
     promo_type ENUM("one-time","multiple") NOT NULL
 );
+
+
+ALTER TABLE promo_code
+ADD discount_rate DECIMAL(1,1) NOT NULL;

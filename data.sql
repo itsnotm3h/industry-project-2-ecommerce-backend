@@ -47,16 +47,22 @@ CREATE TABLE customer_session_log (
 CREATE TABLE products (
     product_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     product_price DECIMAL(10,2) NOT NULL,
-    product_image VARCHAR(255),
+    product_image VARCHAR(255)NOT NULL,
     product_stock INT UNSIGNED
 );
 
-CREATE category (
-
+CREATE TABLE categories (
+    category_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(50) NOT NULL,
+    user_id INT UNSIGNED NOT NULL
 );
 
-CREATE product_category (
-    
+CREATE TABLE product_category (
+    no INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    category_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE,
+    product_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
 CREATE TABLE orders (
@@ -119,3 +125,6 @@ CREATE TABLE promo_code (
 
 ALTER TABLE promo_code
 ADD discount_rate DECIMAL(1,1) NOT NULL;
+
+ALTER TABLE products
+ADD product_name VARCHAR(255) NOT NULL;

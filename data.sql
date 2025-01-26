@@ -20,7 +20,7 @@ INSERT INTO categories (category_name, user_id) VALUES
 ("jar",1);
 
 INSERT INTO product_category (category_id,product_id) VALUES
-(1,1),(1,2),(1,3),(3.4),(2,5),(1,6);
+(1,1),(1,2),(1,3),(3,4),(2,5),(1,6);
 
 INSERT INTO promo_code (promo_code, start_date, end_date, promo_limit, promo_type, discount_rate)
 VALUES

@@ -1,130 +1,36 @@
-CREATE DATABASE ecommerce;
+INSERT INTO countries (country_code,country_name) VALUES ("SG","Singapore"),("MY","Malaysia"); 
 
-USE ecommerce;
+INSERT INTO addresses (address_line, postal_code, country, level, unit) 
+VALUES
+('10 Marina Boulevard', '018983', 'SG', '50', '501'),
+('1 Raffles Place', '048616', 'SG', '25', '2501'),
+('1 Jalan Ampang', '50450', 'MY', '10', '10-01'),
+('100 Jalan Bukit Bintang', '55100', 'MY', '5', '501');
+INSERT INTO products (product_name, product_price, product_image, product_stock, product_description, product_series) VALUES  
+('Wildflower Basin Vase', 65.00, '/images/RBC_wildflower.png',10, 'A wide, rugged vase with uneven edges and a textured finish, perfect for loose floral arrangements.', 'The Rustic Bloom Collection'),  
+('Meadow Hearth Vase', 50.00, '/images/RBC_meadow.png',1, 'A stout, earthy vase with a raw glaze and an imperfect shape, capturing the beauty of nature’s unpredictability.', 'The Rustic Bloom Collection'),  
+('Valley Drift Table Vase', 80.00, '/images/RBC_valley.png',15, 'A broad, shallow vase with a rugged matte glaze and asymmetrical form, a striking centerpiece for any room.', 'The Rustic Bloom Collection'),
+('Ashen Sauce Jar', 40.00, '/images/EA_ashen.png',16, 'A hand-thrown sauce jar with a speckled grey glaze and an organic texture, ideal for serving sauces or dressings.','The Earth & Ash Collection'),  
+('Earthen Bowl', 60.00, '/images/EA_earthen',13, 'A rustic bowl with a deep, earthy tone and a smooth interior, perfect for hearty meals or salads.', 'The Earth & Ash Collection'),  
+('Slate Horizon Vase', 85.00, '/images/EA_slate.png',15, 'A tall vase with a gradient of grey tones and a raw, unglazed base, blending elegance with nature.', 'The Earth & Ash Collection');
 
-CREATE TABLE countries (
-    country_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    country_code CHAR(3) NOT NULL
-);
+INSERT INTO categories (category_name, user_id) VALUES
+("vase",1),
+("bowl",1),
+("jar",1);
 
-CREATE TABLE addresses (
-    address_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    address_line_1 VARCHAR(255) NOT NULL,
-    address_line_2 VARCHAR(255),
-    postal_code VARCHAR(20) NOT NULL,
-    country CHAR(3) NOT NULL,
-    level VARCHAR(10),
-    unit VARCHAR(10)
-);
+INSERT INTO product_category (category_id,product_id) VALUES
+(1,1),(1,2),(1,3),(3.4),(2,5),(1,6);
 
-CREATE TABLE users (
-    user_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    user_type ENUM("customer","admin") NOT NULL,
-    address_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (address_id) REFERENCES addresses (address_id) ON DELETE CASCADE
-);
-
-CREATE TABLE admin_session_log (
-    admin_session_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    user_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (user_id),
-    user_action VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE customer_session_log (
-    customer_session_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    user_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (user_id),
-    user_action VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE products (
-    product_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    product_price DECIMAL(10,2) NOT NULL,
-    product_image VARCHAR(255)NOT NULL,
-    product_stock INT UNSIGNED
-);
-
-CREATE TABLE categories (
-    category_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    category_name VARCHAR(50) NOT NULL,
-    user_id INT UNSIGNED NOT NULL
-);
-
-CREATE TABLE product_category (
-    no INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    category_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE,
-    product_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES products(product_id)
-);
-
-CREATE TABLE orders (
-    order_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    product_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(product_id) REFERENCES products(product_id),
-    product_quantity INT UNSIGNED NOT NULL,
-    session_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(session_id) REFERENCES customer_session_log(customer_session_id),
-    delivery_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(delivery_id) REFERENCES deliveries(delivery_id)
-);
-
-CREATE TABLE payments (
-    payment_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    session_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(session_id) REFERENCES customer_session_log(customer_session_id),
-    payment_type ENUM("paynow","cc") NOT NULL,
-    payment_amount DECIMAL(10,2),
-    payment_status ENUM("pending","failed") NOT NULL,
-    promo_code VARCHAR(50)
-);
-
-CREATE TABLE deliveries (
-    delivery_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    payment_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(payment_id) REFERENCES payments(payment_id),
-    address_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(address_id) REFERENCES addresses(address_id),
-    user_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES users(user_id),
-    tracking_id INT UNSIGNED NOT NULL,
-    delivery_status ENUM("pending","cancelled","returned","dispatching","delivered") NOT NULL,
-    start_date DATETIME,
-    delivery_date DATETIME,
-    delivery_type ENUM("express","normal","self-collection") NOT NULL
-);
-
-CREATE TABLE price_log (
-    price_session_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    previous_price DECIMAL(10,2) NOT NULL,
-    updated_price DECIMAL(10,2) NOT NULL,
-    product_id INT UNSIGNED,
-    FOREIGN KEY(product_id) REFERENCES products (product_id),
-    user_id INT UNSIGNED,
-    FOREIGN KEY(user_id) REFERENCES users (user_id)
-);
-
-CREATE TABLE promo_code (
-    promo_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    promo_code VARCHAR(50),
-    start_date DATETIME,
-    end_date DATETIME,
-    promo_limit INT,
-    promo_type ENUM("one-time","multiple") NOT NULL
-);
-
-
-ALTER TABLE promo_code
-ADD discount_rate DECIMAL(1,1) NOT NULL;
-
-ALTER TABLE products
-ADD product_name VARCHAR(255) NOT NULL;
+INSERT INTO promo_code (promo_code, start_date, end_date, promo_limit, promo_type, discount_rate)
+VALUES
+('WELCOME10', '2025-01-01 00:00:00', '2025-12-31 23:59:59', 1000, 'one-time', 0.1),
+('NEWYEAR25', '2025-01-01 00:00:00', '2025-01-31 23:59:59', 500, 'multiple', 0.25),
+('SPRINGSALE', '2025-03-01 00:00:00', '2025-03-31 23:59:59', 300, 'multiple', 0.30),
+('SUMMERFUN', '2025-06-01 00:00:00', '2025-06-30 23:59:59', 200, 'one-time', 0.15),
+('FALLDEAL', '2025-09-01 00:00:00', '2025-09-30 23:59:59', 150, 'multiple', 0.20),
+('WINTER20', '2025-12-01 00:00:00', '2025-12-31 23:59:59', 100, 'one-time', 0.20),
+('FLASHSALE', '2025-07-15 00:00:00', '2025-07-15 23:59:59', 50, 'one-time', 0.30),
+('EXCLUSIVE5', '2025-05-01 00:00:00', '2025-05-15 23:59:59', 500, 'multiple', 0.05),
+('HOLIDAY30', '2025-12-20 00:00:00', '2025-12-25 23:59:59', 300, 'multiple', 0.30),
+('CLEARANCE', '2025-11-01 00:00:00', '2025-11-30 23:59:59', 250, 'one-time', 0.25);

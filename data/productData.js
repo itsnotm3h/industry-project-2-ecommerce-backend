@@ -2,6 +2,7 @@ const pool = require('../database');
 
 async function getAllProducts(){
     const [rows] = await pool.query(`SELECT 
+            p.product_id,
             p.product_name, 
             p.product_price, 
             p.product_image, 
@@ -30,6 +31,7 @@ const [rows] = await pool.query(`SELECT
             p.product_image, 
             p.product_stock, 
             p.product_series, 
+            p.product_description,
             c.category_name 
         FROM 
             products p

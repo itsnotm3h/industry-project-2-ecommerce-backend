@@ -65,6 +65,18 @@ CREATE TABLE product_category (
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
+CREATE TABLE product_dimension(
+    pd_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    pd_height DECIMAL(3,1),
+    pd_width DECIMAL(3,1),
+    pd_depth DECIMAL(3,1),
+    pd_diameter DECIMAL(3,1),
+    pd_circumference DECIMAL(3,1),
+    product_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+)
+
+
 
 
 -- Not yet create

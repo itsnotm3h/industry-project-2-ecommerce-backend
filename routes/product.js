@@ -17,7 +17,7 @@ router.get("/", async (req,res)=>{
 //GET a single product
 router.get("/:id", async (req,res)=>{
    try{
-        const product = await productService.getProductsById(req.params.id);
+        const product = await productService.getProductById(req.params.id);
         res.json(product);
    }
    catch(error)

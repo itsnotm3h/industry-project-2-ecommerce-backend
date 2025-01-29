@@ -34,3 +34,25 @@ VALUES
 ('EXCLUSIVE5', '2025-05-01 00:00:00', '2025-05-15 23:59:59', 500, 'multiple', 0.05),
 ('HOLIDAY30', '2025-12-20 00:00:00', '2025-12-25 23:59:59', 300, 'multiple', 0.30),
 ('CLEARANCE', '2025-11-01 00:00:00', '2025-11-30 23:59:59', 250, 'one-time', 0.25);
+
+
+-- Inserting product dimensions for all products
+INSERT INTO product_dimension (pd_height, pd_width, pd_depth, pd_diameter, pd_circumference, product_id)
+VALUES
+    -- Wildflower Basin (Wide, rugged vase)
+    (15.0, 12.0, 12.0, NULL, NULL, 1),  -- Height, width, depth for a broad shape, no diameter or circumference needed
+
+    -- Meadow Hearth (Stout, earthy vase)
+    (10.0, 10.0, 10.0, NULL, NULL, 2),  -- A stout, earthy vase with equal height, width, and depth
+
+    -- Valley Drift (Broad, shallow vase)
+    (8.0, 20.0, 20.0, NULL, NULL, 3),  -- Broad, shallow vase, height is smaller than width and depth
+
+    -- Ashen Sauce (Cylindrical saucer jar)
+    (14.0, NULL, NULL, 8.0, NULL, 4),  -- Cylindrical jar with height and diameter
+
+    -- Earthen (Rustic bowl)
+    (6.0, 15.0, 15.0, NULL, NULL, 5),  -- Rustic bowl, height and width/depth are equal
+
+    -- Slate Horizon (Tall vase)
+    (20.0, 10.0, 10.0, NULL, NULL, 6);  -- Tall vase with height greater than width and depth

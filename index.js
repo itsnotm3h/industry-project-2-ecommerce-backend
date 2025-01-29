@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
   res.json({ message: "Welcome to the API" });
 });
 
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

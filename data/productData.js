@@ -32,7 +32,7 @@ const [rows] = await pool.query(`SELECT
             p.product_stock, 
             p.product_series, 
             p.product_description,
-            c.category_name 
+            c.category_name
         FROM 
             products p
         JOIN 
@@ -42,7 +42,16 @@ const [rows] = await pool.query(`SELECT
         
         JOIN categories c
         ON 
-            c.category_id = pc.category_id WHERE p.product_id = ?`, [id]);
+            c.category_id = pc.category_id
+       
+        WHERE p.product_id = ?`, [id]);
+
+
+const [dimension] = await pool.query(`SELECT * FROM product_dimension  WHERE product_id = ?`, [id]);
+
+if (rows.length > 0) {
+    rows[0].dimension = dimension;  // Add dimension data to the product object
+}
 
   return rows[0];
 

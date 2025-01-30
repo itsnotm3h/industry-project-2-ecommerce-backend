@@ -44,6 +44,28 @@ CREATE TABLE customer_session_log (
     user_action VARCHAR(255) NOT NULL
 );
 
+
+
+CREATE TABLE s(
+    public_session_id VARCHAR(255) UNIQUE PRIMARY KEY,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    user_id INT UNSIGNED,
+    user_action VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE public_cart (
+    public_cart_no INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    public_session_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (public_session_id) REFERENCES public_session_log (public_session_id),
+    product_id INT UNSIGNED NOT NULL,
+    product_price DECIMAL(10,2) NOT NULL,
+    product_qty INT UNSIGNED
+);
+
+
 CREATE TABLE products (
     product_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     product_price DECIMAL(10,2) NOT NULL,

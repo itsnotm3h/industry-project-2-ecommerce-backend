@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+//to set cookie
+const cookieParser = require("cookie-parser");
+
 //this is to make the connection asychronous.
 const pool = require('./database');
 
@@ -9,6 +12,7 @@ const pool = require('./database');
 
 //This is to set up the router:
 const productsRouter = require("./routes/product");
+const cookieRouter = require("./routes/initialise");
 
 
 const app = express();
@@ -16,12 +20,18 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 app.use('/api/products', productsRouter);
+app.use('/session', cookieRouter);
+
+
 
 // Routes
 app.get('/', (req, res) => {
   res.json({ message: "Welcome to the API" });
 });
+
+
 
 
 // Start the server

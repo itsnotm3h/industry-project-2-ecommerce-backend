@@ -17,9 +17,14 @@ const cookieRouter = require("./routes/initialise");
 
 const app = express();
 
+const corsOptions = {
+  origin: process.env.LOCAL_URL,  // Replace with your frontend URL
+  credentials: true,  // Allow cookies to be sent
+};
+
 // Middleware
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cors());
 app.use(cookieParser());
 app.use('/api/products', productsRouter);
 app.use('/session', cookieRouter);

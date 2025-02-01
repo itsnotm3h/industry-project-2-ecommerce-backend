@@ -13,29 +13,38 @@ const crypto = require("crypto");
 router.post("/init", async (req,res)=>{
 
     try{
-        const sessionId = req.cookies.session_id || crypto.randomBytes(16).toString('hex');;        
+
+   
+        const checkSession = req.cookies.session_id;
+
+        if(checkSession==null)
+        {
+
+        const sessionId = req.cookies.session_id || crypto.randomBytes(16).toString('hex');   
 
         res.cookie("session_id", sessionId, {
-            path: '/',
+            // httpOnly: true,
+            // secure: process.env.NODE_ENV === 'production' || process.env.LOCAL_URL.includes('gitpod'),  // Allow cookies in both local and production
+            // sameSite: 'None',  // Required for cross-origin requests
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite:"none",
-            maxAge: 24 * 60 * 60 * 1000
+            secure: true, // Makes sure the cookie is sent only over HTTPS
+            sameSite: 'None', // Required for cross-origin cookies
+            maxAge: 24 * 60 * 60 * 1000  // 1-day expiration
           });
         
         let sessionAction = "first_visit";
         
         res.json({message:"Session initialized",sessionId});
+        
+        await sessionService.setSession(sessionId, sessionAction);
+        // console.log(sessionId);
+    }
+    // console.log("Incoming Cookies:", checkSession); // Log received cookies
 
-        if(sessionId)
-        {
-            await sessionService.setSession(sessionId, sessionAction);
-        }
 
     }
     catch (error){
         console.error("Error initializing session:", error);
-
         res.status(500).json({message: "This error is from routes (intialised.js): " + error.message})
     }
    

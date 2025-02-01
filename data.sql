@@ -7,12 +7,12 @@ VALUES
 ('1 Jalan Ampang', '50450', 'MY', '10', '10-01'),
 ('100 Jalan Bukit Bintang', '55100', 'MY', '5', '501');
 INSERT INTO products (product_name, product_price, product_image, product_stock, product_description, product_series) VALUES  
-('Wildflower Basin Vase', 65.00, '/images/RBC_wildflower.png',10, 'A wide, rugged vase with uneven edges and a textured finish, perfect for loose floral arrangements.', 'The Rustic Bloom Collection'),  
-('Meadow Hearth Vase', 50.00, '/images/RBC_meadow.png',1, 'A stout, earthy vase with a raw glaze and an imperfect shape, capturing the beauty of nature’s unpredictability.', 'The Rustic Bloom Collection'),  
-('Valley Drift Table Vase', 80.00, '/images/RBC_valley.png',15, 'A broad, shallow vase with a rugged matte glaze and asymmetrical form, a striking centerpiece for any room.', 'The Rustic Bloom Collection'),
-('Ashen Sauce Jar', 40.00, '/images/EA_ashen.png',16, 'A hand-thrown sauce jar with a speckled grey glaze and an organic texture, ideal for serving sauces or dressings.','The Earth & Ash Collection'),  
-('Earthen Bowl', 60.00, '/images/EA_earthen',13, 'A rustic bowl with a deep, earthy tone and a smooth interior, perfect for hearty meals or salads.', 'The Earth & Ash Collection'),  
-('Slate Horizon Vase', 85.00, '/images/EA_slate.png',15, 'A tall vase with a gradient of grey tones and a raw, unglazed base, blending elegance with nature.', 'The Earth & Ash Collection');
+('Wildflower Basin', 65.00, '/images/RBC_wildflower.png',10, 'A wide, rugged vase with uneven edges and a textured finish, perfect for loose floral arrangements.', 'Rustic Bloom'),  
+('Meadow Hearth', 50.00, '/images/RBC_meadow.png',1, 'A stout, earthy vase with a raw glaze and an imperfect shape, capturing the beauty of nature’s unpredictability.', 'Rustic Bloom'),  
+('Valley Drift Table', 80.00, '/images/RBC_valley.png',15, 'A broad, shallow vase with a rugged matte glaze and asymmetrical form, a striking centerpiece for any room.', 'Rustic Bloom'),
+('Ashen Sauce', 40.00, '/images/EA_ashen.png',16, 'A hand-thrown sauce jar with a speckled grey glaze and an organic texture, ideal for serving sauces or dressings.','Earth & Ash'),  
+('Earthen', 60.00, '/images/EA_earthen.png',13, 'A rustic bowl with a deep, earthy tone and a smooth interior, perfect for hearty meals or salads.', 'Earth & Ash'),  
+('Slate Horizon', 85.00, '/images/EA_slate.png',15, 'A tall vase with a gradient of grey tones and a raw, unglazed base, blending elegance with nature.', 'Earth & Ash');
 
 INSERT INTO categories (category_name, user_id) VALUES
 ("vase",1),

@@ -46,7 +46,7 @@ CREATE TABLE customer_session_log (
 
 
 
-CREATE TABLE s(
+CREATE TABLE public_session_log(
     public_session_id VARCHAR(255) UNIQUE PRIMARY KEY,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT NOW() ON UPDATE NOW(),

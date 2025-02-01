@@ -26,6 +26,7 @@ async function getAllProducts(){
 async function getProductById(id)
 {
 const [rows] = await pool.query(`SELECT 
+    p.product_id, 
             p.product_name, 
             p.product_price, 
             p.product_image, 

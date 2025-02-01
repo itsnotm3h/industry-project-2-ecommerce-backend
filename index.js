@@ -18,8 +18,9 @@ const cookieRouter = require("./routes/initialise");
 const app = express();
 
 const corsOptions = {
-  origin: process.env.LOCAL_URL,  // Replace with your frontend URL
+  origin: process.env.LOCAL_URL,  // Reference the environment variable
   credentials: true,  // Allow cookies to be sent
+  allowedHeaders: ["Content-Type", "Authorization"],  // Ensure headers are allowed
 };
 
 // Middleware
@@ -40,7 +41,7 @@ app.get('/', (req, res) => {
 
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

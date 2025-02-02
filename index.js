@@ -13,6 +13,7 @@ const pool = require('./database');
 //This is to set up the router:
 const productsRouter = require("./routes/product");
 const cookieRouter = require("./routes/initialise");
+const promoRouter = require("./routes/promo");
 
 
 const app = express();
@@ -29,6 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api/products', productsRouter);
 app.use('/session', cookieRouter);
+app.use('/promo', promoRouter);
 
 
 

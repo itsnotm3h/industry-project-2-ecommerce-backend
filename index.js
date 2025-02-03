@@ -14,6 +14,7 @@ const pool = require('./database');
 const productsRouter = require("./routes/product");
 const cookieRouter = require("./routes/initialise");
 const promoRouter = require("./routes/promo");
+const userRouter = require("./routes/user");
 
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(cookieParser());
 app.use('/api/products', productsRouter);
 app.use('/session', cookieRouter);
 app.use('/promo', promoRouter);
+app.use('/api/users',userRouter);
 
 
 

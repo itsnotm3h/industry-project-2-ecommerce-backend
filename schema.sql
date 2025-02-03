@@ -24,8 +24,11 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
     user_type ENUM("customer","admin") NOT NULL,
-    address_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY (address_id) REFERENCES addresses (address_id) ON DELETE CASCADE
+    address_id INT UNSIGNED NULL,
+    FOREIGN KEY (address_id) REFERENCES addresses (address_id) ON DELETE CASCADE,
+    dob DATE NOT NULL,
+    marketing_preference ENUM("yes","no") NOT NULL,
+    register_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
 );
 
 CREATE TABLE admin_session_log (
@@ -176,3 +179,9 @@ ADD product_type VARCHAR(255) NOT NULL;
 
 ALTER TABLE products
 ADD product_series VARCHAR(255) NOT NULL;
+
+
+ALTER TABLE users
+ADD dob DATE NOT NULL,
+ADD marketing_preference ENUM("yes","no") NOT NULL,
+ADD register_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;

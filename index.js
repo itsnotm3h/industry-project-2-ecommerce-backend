@@ -15,6 +15,8 @@ const productsRouter = require("./routes/product");
 const cookieRouter = require("./routes/initialise");
 const promoRouter = require("./routes/promo");
 const userRouter = require("./routes/user");
+const cartRouter = require("./routes/cart");
+
 
 
 const app = express();
@@ -33,6 +35,7 @@ app.use('/api/products', productsRouter);
 app.use('/session', cookieRouter);
 app.use('/promo', promoRouter);
 app.use('/api/users',userRouter);
+app.use('/api/cart',cartRouter);
 
 
 

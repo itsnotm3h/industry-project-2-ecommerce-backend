@@ -16,7 +16,7 @@ router.post("/init", async (req,res)=>{
 
    
         const checkSession = req.cookies.session_id;
-
+        
         if(checkSession==null)
         {
 

@@ -32,6 +32,19 @@ async function createUser({first_name,last_name,email,password,dob_day,dob_month
     })
 }
 
+
+async function loginUser (email,password){
+    const user = await userData.getUserEmail(email);
+    if(!user) throw new Error ("Invalid Email");
+
+    const checkPassword = await bcrypt.compare(password,user.password);
+    if(!checkPassword) throw new Error ("Invalid Password");
+
+    return user;
+
+} 
+
 module.exports={
-    createUser
+    createUser,
+    loginUser
 };

@@ -36,8 +36,34 @@ async function createUser({first_name,last_name,email,password,dob,marketing_pre
 
 };
 
+
+async function updateUserCart(session_id)
+{
+    try
+    {
+        const [rows] = await pool.query(`DELETE FROM public_session_log WHERE public_session_id =?`, [session_id]);
+        console.log(rows);
+
+        if(rows.affectedRows > 0)
+        {
+            return {success:true, message:"Cart updated"}
+        }
+        else{
+            return {success:true,message:"No session found"}
+        }
+        
+    } catch(error)
+    {
+        console.error("Error from data (UserData): " , error);
+        return {success:false,message:"Error"}
+
+    }
+
+}
+
 module.exports = {
     createUser,
     getUserById,
-    getUserEmail
+    getUserEmail,
+    updateUserCart
 }

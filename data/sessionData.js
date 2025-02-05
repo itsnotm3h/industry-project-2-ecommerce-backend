@@ -11,13 +11,21 @@ async function setSession(public_session_id,user_action)
 {
     const connection = await pool.getConnection();
 
-    console.log("public_session_id", public_session_id)
+    // console.log("public_session_id", public_session_id)
 
     try{
         await connection.beginTransaction();
 
-          await connection.query(`INSERT INTO public_session_log (public_session_id,user_id,user_action) VALUES (?,?,?)`,[public_session_id,null,user_action]);
+        const [check] = await connection.query(`SELECT * FROM public_session_log WHERE public_session_id = ?`,[public_session_id])
 
+        if(check)
+        {
+          // await connection.query(`INSERT INTO public_session_log (public_session_id,user_id,user_action) VALUES (?,?,?)`,[public_session_id,null,user_action]);
+
+        }
+        else{
+          await connection.query(`INSERT INTO public_session_log (public_session_id,user_id,user_action) VALUES (?,?,?)`,[public_session_id,null,user_action]);
+        }
         await connection.commit();
 
     } catch (error) {

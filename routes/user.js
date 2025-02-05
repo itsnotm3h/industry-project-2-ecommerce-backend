@@ -50,11 +50,16 @@ router.post("/login", async (req,res)=>{
         res.cookie('auth_token', token, {
             httpOnly: true, // Prevent JavaScript access to the cookie (mitigates XSS)
             secure: true, // Only send over HTTPS in production
-            sameSite: 'lax',  // Only send over HTTPS in production
+            sameSite: 'None', // Only send over HTTPS in production
+            path: '/' ,
             maxAge: 3600000, // 1 hour expiration (optional)
           });
     
-        res.json({status:"loggedIn"})
+        
+        await userService.updateUserCart(checkSession);
+        res.json({status:"loggedIn"});
+        
+
 
     }
     catch(error){
@@ -67,7 +72,8 @@ router.post("/logout", async (req,res)=>{
     res.clearCookie('auth_token', {
         httpOnly: true, // Prevent JavaScript access to the cookie (mitigates XSS)
         secure: true, // Only send over HTTPS in production
-        sameSite:'lax', // Prevent CSRF attacks
+        sameSite:'None', // Prevent CSRF attacks
+        path: '/'
       });
 
       return res.status(200).json({ message: "Logout successful" });

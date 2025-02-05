@@ -22,11 +22,12 @@ router.post("/init", async (req,res)=>{
         const sessionId = req.cookies.session_id || crypto.randomBytes(16).toString('hex');   
 
         res.cookie("session_id", sessionId, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // Only true in production (use HTTPS)
-            sameSite: 'lax', // Needed for cross-origin cookies
-            maxAge: 24 * 60 * 60 * 1000, // 1-day expiration
-          });
+            httpOnly: true,  // Ensures that the cookie is not accessible by JavaScript
+            secure:true,  // Only secure cookies in production (HTTPS)
+            sameSite: 'None',  // Necessary for cross-origin cookies
+            path: '/',  // Cookie is available across the entire app
+            maxAge: 24 * 60 * 60 * 1000  // 1-day expiration
+        });
         
         let sessionAction = "first_visit";
         

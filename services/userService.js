@@ -41,10 +41,16 @@ async function loginUser (email,password){
     if(!checkPassword) throw new Error ("Invalid Password");
 
     return user;
-
 } 
+
+async function updateUserCart(session_id)
+{
+    const cartUpdate  = await userData.updateUserCart(session_id);
+    return cartUpdate;
+}
 
 module.exports={
     createUser,
-    loginUser
+    loginUser,
+    updateUserCart
 };

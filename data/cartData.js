@@ -33,14 +33,14 @@ async function getCart(session_id) {
             [session_id]
         );
     
-        const [dimension] = await pool.query(`SELECT * FROM product_dimension`);
+        const [product_dimension] = await pool.query(`SELECT * FROM product_dimension`);
     
     
         for (let item of rows) {
-            const currentIndex = dimension.findIndex(i => i.product_id === item.product_id);
+            const currentIndex = product_dimension.findIndex(i => i.product_id === item.product_id);
             if (currentIndex !== -1) {
     
-                const currentDimension = dimension[currentIndex]; // Correct lookup
+                const currentDimension = product_dimension[currentIndex]; // Correct lookup
     
     
                 let fullString = "";
@@ -63,7 +63,7 @@ async function getCart(session_id) {
                     }
                 }
     
-                item.dimension = fullString; // Correctly assign to `item`
+                item.product_dimension = fullString; // Correctly assign to `item`
             }
         }
 
@@ -93,7 +93,10 @@ async function addToCart(session_id,user_id, cartItems) {
 
         for(const item of cartItems)
         {
-            await connection.query(`INSERT INTO cart (public_session_id,user_id,product_id,product_qty) VALUES(?,?,?,?)`,[session_id,user_id,item.product_id,item.product_qty])
+            if(item.product_qty != 0)
+            {
+                await connection.query(`INSERT INTO cart (public_session_id,user_id,product_id,product_qty) VALUES(?,?,?,?)`,[session_id,user_id,item.product_id,item.product_qty])
+            }
         }
 
         await connection.commit();
@@ -101,7 +104,7 @@ async function addToCart(session_id,user_id, cartItems) {
     }
     catch(error)
     {
-        console.log(error.message);
+        console.log("cartData:" + error.message);
         await connection.rollback();
     } finally{
         connection.release();

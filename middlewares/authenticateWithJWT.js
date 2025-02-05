@@ -2,15 +2,8 @@ const jwt = require("jsonwebtoken");
 
 function authenticateUser (req,res,next)
 {
-    // const authHeader = req.headers['authorization'];
-    // if(!authHeader || !authHeader.startsWith(`Bearer `))
-    // {
-    //     return res.status(401).json({message:"Authorization Header is missing. "})
-    // }
-
-    // const token = authHeader(' ')[1];
-
     const token = req.cookies.auth_token;
+    console.log("This is authenticate: "+ token);
 
     if(!token) return res.status(401).json({message:"Unauthorizes"})
 

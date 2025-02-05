@@ -48,10 +48,10 @@ const [rows] = await pool.query(`SELECT
         WHERE p.product_id = ?`, [id]);
 
 
-const [dimension] = await pool.query(`SELECT * FROM product_dimension  WHERE product_id = ?`, [id]);
+const [product_dimension] = await pool.query(`SELECT * FROM product_dimension  WHERE product_id = ?`, [id]);
 
 if (rows.length > 0) {
-    rows[0].dimension = dimension;  // Add dimension data to the product object
+    rows[0].product_dimension = product_dimension;  // Add dimension data to the product object
 }
 
   return rows[0];

@@ -8,7 +8,7 @@ const authenticateToken = require('../middlewares/authenticateWithJWT');
 router.get("/", async (req, res) => {
     try {
         const session_id = req.cookies.session_id;
-        console.log(session_id);
+        console.log("cart Route: "+session_id);
         const cart = await cartService.getCart(session_id);
         console.log(cart);
         res.json(cart);
@@ -36,7 +36,7 @@ router.post("/loggedIn", authenticateToken, async (req, res) => {
     try {
         const cartItems = req.body.cartItems;
         const session_id = req.cookies.session_id;
-        const user_id = req.user.userId;
+        const user_id = req.userId;
         await cartService.addToCart(session_id, user_id, cartItems);
         res.json({ message: 'cart updated' });
     } catch (error) {

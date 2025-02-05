@@ -13,9 +13,8 @@ const crypto = require("crypto");
 router.post("/init", async (req,res)=>{
 
     try{
-
-   
         const checkSession = req.cookies.session_id;
+        console.log(checkSession);
         
         if(checkSession==null)
         {
@@ -23,13 +22,10 @@ router.post("/init", async (req,res)=>{
         const sessionId = req.cookies.session_id || crypto.randomBytes(16).toString('hex');   
 
         res.cookie("session_id", sessionId, {
-            // httpOnly: true,
-            // secure: process.env.NODE_ENV === 'production' || process.env.LOCAL_URL.includes('gitpod'),  // Allow cookies in both local and production
-            // sameSite: 'None',  // Required for cross-origin requests
             httpOnly: true,
-            secure: true, // Makes sure the cookie is sent only over HTTPS
-            sameSite: 'None', // Required for cross-origin cookies
-            maxAge: 24 * 60 * 60 * 1000  // 1-day expiration
+            secure: process.env.NODE_ENV === "production", // Only true in production (use HTTPS)
+            sameSite: 'lax', // Needed for cross-origin cookies
+            maxAge: 24 * 60 * 60 * 1000, // 1-day expiration
           });
         
         let sessionAction = "first_visit";
@@ -39,6 +35,10 @@ router.post("/init", async (req,res)=>{
         await sessionService.setSession(sessionId, sessionAction);
         // console.log(sessionId);
     }
+    else{
+        res.json({message:"Session initialized",checkSession});
+    }
+
     // console.log("Incoming Cookies:", checkSession); // Log received cookies
 
 
@@ -49,5 +49,25 @@ router.post("/init", async (req,res)=>{
     }
    
 })
+
+router.get("/", async (req,res)=>{
+
+        const checkAuth = req.cookies.auth_token;
+        const checkSession = req.cookies.session_id;
+        
+
+        if(checkAuth && checkSession)
+            {
+                let sessionAction = "Logged_In";
+                await sessionService.setSession(checkSession, sessionAction);
+                res.json("loggedIn");
+
+            }
+            else{
+                res.json("");
+            }
+
+});
+
 
 module.exports = router;

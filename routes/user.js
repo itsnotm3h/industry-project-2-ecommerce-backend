@@ -43,14 +43,14 @@ router.post("/login", async (req,res)=>{
 
         const {email,password} = req.body;
         const user = await userService.loginUser(email,password);
-        const token = jwt.sign({userId:user.user_id, userType: user.user_type},process.env.JWT_SECRET, {
+        const token = jwt.sign({userId:user.user_id},process.env.JWT_SECRET, {
             expiresIn:'1h'
         });
 
         res.cookie('auth_token', token, {
             httpOnly: true, // Prevent JavaScript access to the cookie (mitigates XSS)
-            secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-            sameSite: 'Strict', // Prevent CSRF attacks
+            secure: true, // Only send over HTTPS in production
+            sameSite: 'lax',  // Only send over HTTPS in production
             maxAge: 3600000, // 1 hour expiration (optional)
           });
     
@@ -66,9 +66,24 @@ router.post("/login", async (req,res)=>{
 router.post("/logout", async (req,res)=>{
     res.clearCookie('auth_token', {
         httpOnly: true, // Prevent JavaScript access to the cookie (mitigates XSS)
-        secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-        sameSite: 'Strict', // Prevent CSRF attacks
+        secure: true, // Only send over HTTPS in production
+        sameSite:'lax', // Prevent CSRF attacks
       });
+
+      return res.status(200).json({ message: "Logout successful" });
+
 })
+
+
+// router.post("/logout", async (req, res) => {
+//     res.cookie("auth_token", "", {
+//         httpOnly: true,
+//         secure: true,
+//         sameSite: "None",
+//         expires: new Date(0), // 🔥 Expire the cookie immediately
+//     });
+
+//     return res.status(200).json("");
+// });
 
 module.exports = router;

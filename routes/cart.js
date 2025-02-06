@@ -8,8 +8,8 @@ const authenticateToken = require('../middlewares/authenticateWithJWT');
 router.get("/", async (req, res) => {
     try {
         const session_id = req.cookies.session_id;
-        console.log("cart Route: "+session_id);
-        const cart = await cartService.getCart(session_id);
+        const user_id = req.userId;
+        const cart = await cartService.getCart(session_id,user_id);
         console.log(cart);
         res.json(cart);
 
@@ -17,6 +17,20 @@ router.get("/", async (req, res) => {
         res.status(500).json({ message: "Error from route cart: " + error.message })
     }
 });
+
+router.get("/loggedIn",  authenticateToken, async (req, res) => {
+    try {
+        const session_id = req.cookies.session_id;
+        const user_id = req.userId;
+        const cart = await cartService.getCart(session_id,user_id);
+        console.log(cart);
+        res.json(cart);
+
+    } catch (error) {
+        res.status(500).json({ message: "Error from route cart: " + error.message })
+    }
+});
+
 
 
 router.post("/", async (req, res) => {
@@ -38,6 +52,7 @@ router.post("/loggedIn", authenticateToken, async (req, res) => {
         const session_id = req.cookies.session_id;
         const user_id = req.userId;
         await cartService.addToCart(session_id, user_id, cartItems);
+
         res.json({ message: 'cart updated' });
     } catch (error) {
         res.status(400).json({ message: "Error from route cart: " + error.message })

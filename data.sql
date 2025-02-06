@@ -6,6 +6,7 @@ VALUES
 ('1 Raffles Place', '048616', 'SG', '25', '2501'),
 ('1 Jalan Ampang', '50450', 'MY', '10', '10-01'),
 ('100 Jalan Bukit Bintang', '55100', 'MY', '5', '501');
+
 INSERT INTO products (product_name, product_price, product_image, product_stock, product_description, product_series) VALUES  
 ('Wildflower Basin', 65.00, '/images/RBC_wildflower.png',10, 'A wide, rugged vase with uneven edges and a textured finish, perfect for loose floral arrangements.', 'Rustic Bloom'),  
 ('Meadow Hearth', 50.00, '/images/RBC_meadow.png',1, 'A stout, earthy vase with a raw glaze and an imperfect shape, capturing the beauty of nature’s unpredictability.', 'Rustic Bloom'),  

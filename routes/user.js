@@ -56,14 +56,14 @@ router.post("/login", async (req,res)=>{
           });
     
         
-        await userService.updateUserCart(checkSession);
+        await userService.updateUserCart(checkSession,user.user_id);
         res.json({status:"loggedIn"});
         
 
 
     }
     catch(error){
-        res.status(401).json({ message: "from Route :"+error.message });
+        res.status(401).json({ message: "from Route :"+error });
     }
 
 })
@@ -80,16 +80,5 @@ router.post("/logout", async (req,res)=>{
 
 })
 
-
-// router.post("/logout", async (req, res) => {
-//     res.cookie("auth_token", "", {
-//         httpOnly: true,
-//         secure: true,
-//         sameSite: "None",
-//         expires: new Date(0), // 🔥 Expire the cookie immediately
-//     });
-
-//     return res.status(200).json("");
-// });
 
 module.exports = router;

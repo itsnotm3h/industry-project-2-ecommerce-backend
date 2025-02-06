@@ -37,13 +37,12 @@ async function createUser({first_name,last_name,email,password,dob,marketing_pre
 };
 
 
-async function updateUserCart(session_id)
+async function updateUserCart(session_id,user_id)
 {
     try
     {
-        const [rows] = await pool.query(`DELETE FROM public_session_log WHERE public_session_id =?`, [session_id]);
-        console.log(rows);
-
+        console.log("this is: " , user_id);
+        const [rows] = await pool.query(`UPDATE cart SET user_id =? WHERE public_session_id =?`, [user_id,session_id]);
         if(rows.affectedRows > 0)
         {
             return {success:true, message:"Cart updated"}

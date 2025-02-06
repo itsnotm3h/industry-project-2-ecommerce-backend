@@ -43,9 +43,9 @@ async function loginUser (email,password){
     return user;
 } 
 
-async function updateUserCart(session_id)
+async function updateUserCart(session_id,user_id)
 {
-    const cartUpdate  = await userData.updateUserCart(session_id);
+    const cartUpdate  = await userData.updateUserCart(session_id,user_id);
     return cartUpdate;
 }
 

@@ -1,8 +1,9 @@
 const cartData = require("../data/cartData");
 
-async function getCart(session_id)
+async function getCart(session_id,user_id)
 {
-    return await cartData.getCart(session_id);
+    if(user_id != null)return await cartData.getCart_user(session_id,user_id);
+    if(user_id == null)return await cartData.getCart(session_id);
 }
 
 async function addToCart(session_id,user_id,cartItems)

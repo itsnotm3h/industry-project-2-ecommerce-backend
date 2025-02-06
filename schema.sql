@@ -28,7 +28,7 @@ CREATE TABLE users (
     FOREIGN KEY (address_id) REFERENCES addresses (address_id) ON DELETE CASCADE,
     dob DATE NOT NULL,
     marketing_preference ENUM("yes","no") NOT NULL,
-    register_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+    register_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE admin_session_log (
@@ -46,8 +46,6 @@ CREATE TABLE customer_session_log (
     FOREIGN KEY (user_id) REFERENCES users (user_id),
     user_action VARCHAR(255) NOT NULL
 );
-
-
 
 CREATE TABLE public_session_log(
     public_session_id VARCHAR(255) UNIQUE PRIMARY KEY,
@@ -103,49 +101,106 @@ CREATE TABLE product_dimension(
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 )
 
+-- CREATE TABLE promo_code (
+--     promo_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+--     promo_code VARCHAR(50),
+--     start_date DATETIME,
+--     end_date DATETIME,
+--     promo_limit INT,
+--     promo_type ENUM("one-time","multiple") NOT NULL,
+--     discount_rate DECIMAL(1,1) NOT NULL
+-- );
+
+CREATE TABLE promo_code (
+    promo_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    promo_code VARCHAR(50),
+    start_date DATETIME,
+    end_date DATETIME,
+    promo_limit INT,
+    promo_type ENUM('one-time', 'multiple') NOT NULL,
+    discount_rate DECIMAL(5,2) NOT NULL
+);
 
 
+ALTER TABLE products
+ADD product_name VARCHAR(255) NOT NULL;
+
+ALTER TABLE products
+ADD product_description VARCHAR(255) NOT NULL;
+
+ALTER TABLE products
+ADD product_series VARCHAR(255) NOT NULL;
+
+
+ALTER TABLE users
+ADD dob DATE NOT NULL,
+ADD marketing_preference ENUM("yes","no") NOT NULL,
+ADD register_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+
+
+-- Orders table
+CREATE TABLE orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NULL,
+  total DECIMAL(10, 2) NOT NULL,
+  status ENUM('pending', 'completed', 'cancelled', 'shipping', 'processing') DEFAULT 'pending',
+  checkout_session_id VARCHAR(255),
+  created_at DATETIME DEFAULT NOW(),
+  FOREIGN KEY (user_id) REFERENCES users (user_id)
+);
+
+-- Order Items table
+CREATE TABLE order_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT NOT NULL,
+  product_id INT UNSIGNED NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
 
 -- Not yet create
+-- CREATE TABLE orders (
+--     order_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+--     product_id INT UNSIGNED NOT NULL,
+--     FOREIGN KEY(product_id) REFERENCES products(product_id),
+--     product_quantity INT UNSIGNED NOT NULL,
+--     session_id INT UNSIGNED NOT NULL,
+--     FOREIGN KEY(session_id) REFERENCES customer_session_log(customer_session_id),
+--     delivery_id INT UNSIGNED NOT NULL,
+--     FOREIGN KEY(delivery_id) REFERENCES deliveries(delivery_id)
+-- );
 
-CREATE TABLE orders (
-    order_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    product_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(product_id) REFERENCES products(product_id),
-    product_quantity INT UNSIGNED NOT NULL,
-    session_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(session_id) REFERENCES customer_session_log(customer_session_id),
-    delivery_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(delivery_id) REFERENCES deliveries(delivery_id)
-);
 
---- Not yet create
-CREATE TABLE payments (
-    payment_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    session_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(session_id) REFERENCES customer_session_log(customer_session_id),
-    payment_type ENUM("paynow","cc") NOT NULL,
-    payment_amount DECIMAL(10,2),
-    payment_status ENUM("pending","failed") NOT NULL,
-    promo_code VARCHAR(50)
-);
+-- CREATE TABLE payments (
+--     payment_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+--     date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--     session_id INT UNSIGNED NOT NULL,
+--     FOREIGN KEY(session_id) REFERENCES customer_session_log(customer_session_id),
+--     payment_type ENUM("paynow","cc") NOT NULL,
+--     payment_amount DECIMAL(10,2),
+--     payment_status ENUM("pending","failed") NOT NULL,
+--     promo_code VARCHAR(50)
+-- );
 
-CREATE TABLE deliveries (
-    delivery_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    payment_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(payment_id) REFERENCES payments(payment_id),
-    address_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(address_id) REFERENCES addresses(address_id),
-    user_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES users(user_id),
-    tracking_id INT UNSIGNED NOT NULL,
-    delivery_status ENUM("pending","cancelled","returned","dispatching","delivered") NOT NULL,
-    start_date DATETIME,
-    delivery_date DATETIME,
-    delivery_type ENUM("express","normal","self-collection") NOT NULL
-);
+-- CREATE TABLE deliveries (
+--     delivery_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+--     payment_id INT UNSIGNED NOT NULL,
+--     FOREIGN KEY(payment_id) REFERENCES payments(payment_id),
+--     address_id INT UNSIGNED NOT NULL,
+--     FOREIGN KEY(address_id) REFERENCES addresses(address_id),
+--     user_id INT UNSIGNED NOT NULL,
+--     FOREIGN KEY(user_id) REFERENCES users(user_id),
+--     tracking_id INT UNSIGNED NOT NULL,
+--     delivery_status ENUM("pending","cancelled","returned","dispatching","delivered") NOT NULL,
+--     start_date DATETIME,
+--     delivery_date DATETIME,
+--     delivery_type ENUM("express","normal","self-collection") NOT NULL
+-- );
 
+
+-- create later for admin.
 CREATE TABLE price_log (
     price_session_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -156,34 +211,3 @@ CREATE TABLE price_log (
     user_id INT UNSIGNED,
     FOREIGN KEY(user_id) REFERENCES users (user_id)
 );
-
-
-CREATE TABLE promo_code (
-    promo_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    promo_code VARCHAR(50),
-    start_date DATETIME,
-    end_date DATETIME,
-    promo_limit INT,
-    promo_type ENUM("one-time","multiple") NOT NULL,
-    discount_rate DECIMAL(1,1) NOT NULL
-);
-
-
-
-ALTER TABLE products
-ADD product_name VARCHAR(255) NOT NULL;
-
-ALTER TABLE products
-ADD product_description VARCHAR(255) NOT NULL;
-
-ALTER TABLE products
-ADD product_type VARCHAR(255) NOT NULL;
-
-ALTER TABLE products
-ADD product_series VARCHAR(255) NOT NULL;
-
-
-ALTER TABLE users
-ADD dob DATE NOT NULL,
-ADD marketing_preference ENUM("yes","no") NOT NULL,
-ADD register_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;

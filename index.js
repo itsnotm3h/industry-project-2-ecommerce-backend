@@ -16,6 +16,7 @@ const cookieRouter = require("./routes/initialise");
 const promoRouter = require("./routes/promo");
 const userRouter = require("./routes/user");
 const cartRouter = require("./routes/cart");
+const checkoutRouter = require("./routes/checkout");
 
 
 
@@ -24,7 +25,7 @@ const app = express();
 const corsOptions = {
   origin: process.env.LOCAL_URL,  // Reference the environment variable
   credentials: true,  // Allow cookies to be sent
-  allowedHeaders: ["Content-Type", "Authorization"],  // Ensure headers are allowed
+  allowedHeaders: ["Content-Type", "Authorization", "Stripe-Signature"],// Ensure headers are allowed
 };
 
 // Middleware
@@ -36,13 +37,14 @@ app.use('/session', cookieRouter);
 app.use('/promo', promoRouter);
 app.use('/api/users',userRouter);
 app.use('/api/cart',cartRouter);
-
+app.use('/api/checkout',checkoutRouter);
 
 
 // Routes
 app.get('/', (req, res) => {
   res.json({ message: "Welcome to the API" });
 });
+
 
 
 

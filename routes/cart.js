@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../database');
 const cartService = require('../services/cartService');
-const authenticateToken = require('../middlewares/authenticateWithJWT');
+const authenticate = require('../middlewares/authenticateWithJWT');
 
 
 router.get("/", async (req, res) => {
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/loggedIn",  authenticateToken, async (req, res) => {
+router.get("/loggedIn",  authenticate, async (req, res) => {
     try {
         const session_id = req.cookies.session_id;
         const user_id = req.userId;
@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
     }
 })
 
-router.post("/loggedIn", authenticateToken, async (req, res) => {
+router.post("/loggedIn", authenticate, async (req, res) => {
     try {
         const cartItems = req.body.cartItems;
         const session_id = req.cookies.session_id;

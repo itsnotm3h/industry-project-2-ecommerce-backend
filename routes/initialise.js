@@ -34,7 +34,7 @@ router.post("/init", async (req,res)=>{
         res.json({message:"Session initialized",sessionId});
         
         await sessionService.setSession(sessionId, sessionAction);
-        // console.log(sessionId);
+        console.log(sessionId);
     }
     else{
         res.json({message:"Session initialized",checkSession});

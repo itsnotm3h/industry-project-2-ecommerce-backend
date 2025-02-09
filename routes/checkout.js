@@ -19,12 +19,12 @@ router.post("/", authenticate, async (req,res)=>{
 
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     let event;
-    let payload = req.body.toString();
 
     try {
         // Stripe requires the raw body to be passed for signature verification
         const sig = req.headers['stripe-signature'];
-        event = stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_WEBHOOK_SECRET);
+        event = stripe.webhooks.constructEvent(req.body.toString(), sig, process.env.STRIPE_WEBHOOK_SECRET);
+        console.log(event);
     } catch (error) {
         console.error(`Webhook Error: ${error.message}`);
         return res.status(400).send(`Webhook Error: ${error.message}`);

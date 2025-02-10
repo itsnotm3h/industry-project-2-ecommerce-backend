@@ -19,7 +19,7 @@ router.post("/init", async (req,res)=>{
         if(checkSession==null)
         {
 
-        const sessionId = req.cookies.session_id || crypto.randomBytes(16).toString('hex');   
+        const sessionId = req.cookies.session_id || crypto.randomBytes(16).toString('hex');  
 
         res.cookie("session_id", sessionId, {
             httpOnly: true,  // Ensures that the cookie is not accessible by JavaScript

@@ -56,11 +56,14 @@ async function getOrderData (orderId){
 
 async function updateOrderStatus (orderId, status)
 {
+    console.log(orderId);
+    console.log(status);
     if(!['created','processing','completed','cancelled'].includes(status))
     {
         throw new Error("invalid status")
     }
     await pool.query('UPDATE orders SET status = ? WHERE id = ?',[status, orderId]);
+    
 }
 
 async function updateOrderSessionId (orderId,sessionId)

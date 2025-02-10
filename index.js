@@ -23,9 +23,10 @@ const checkoutRouter = require("./routes/checkout");
 const app = express();
 
 const corsOptions = {
-  origin: process.env.LOCAL_URL,  // Reference the environment variable
+  origin: [process.env.LOCAL_URL, process.env.URL],  // Replace with your ngrok URL
   credentials: true,  // Allow cookies to be sent
-  allowedHeaders: ["Content-Type", "Authorization", "Stripe-Signature"],// Ensure headers are allowed
+  allowedHeaders: ["Content-Type", "Authorization", "Stripe-Signature","ngrok-skip-browser-warning"],// Ensure headers are allowed
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
 };
 
 // Middleware
@@ -45,11 +46,8 @@ app.get('/', (req, res) => {
   res.json({ message: "Welcome to the API" });
 });
 
-
-
-
 // Start the server
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

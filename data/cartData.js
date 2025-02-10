@@ -158,7 +158,7 @@ async function getCart_user(session_id,user_id) {
         
         
 
-async function addToCart(session_id,user_id, cartItems) {
+async function addToCart(session_id,user_id,cartItems) {
 
     console.log(cartItems)
 

@@ -48,36 +48,5 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     res.json({ received: true });
 });
 
-// so this is what we can use to detect what kind of payment is being made. 
-// router.post('/webhook', express.raw({ type: 'application/json' }), async (req,res)=>{
-
-
-//     let event;
-//     try{
-//         const sig = req.headers['stripe-signature'];
-//         event = stripe.webhooks.constructEvent(req.body.toString(),sig,process.env.STRIPE_WEBHOOK_SECRET);
-//     } catch(error){
-//         console.error(`Webhook Error: ${error.message}`);
-//         return res.status(400).send(`webhook Error: ${error.message}`);
-//     }
-
-//     switch(event.type)
-//     {
-//         case 'checkout.session.completed':
-//             const session = event.data.object;
-//             console.log('Checkout session completed!',session);
-//             if(session_metadata && session.metadata.orderId)
-//             {
-//                 await orderService.updateOrderStatus(session.metadata.orderId,'processing')
-//             }
-//             break;
-        
-//         default:
-//             console.log(`unhandled event type: ${event.type}`);
-//     }
-    
-//     res.json({ received: true });
-// })
-
 
 module.exports = router;

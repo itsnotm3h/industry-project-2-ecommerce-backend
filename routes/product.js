@@ -3,6 +3,8 @@ const router = express.Router();
 const pool = require('../database');
 const productService = require('../services/productService');
 
+router.use(express.json());
+
 //Get all products
 router.get("/", async (req,res)=>{
     try{

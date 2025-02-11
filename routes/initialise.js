@@ -3,9 +3,7 @@ const router = express.Router();
 const pool = require('../database');
 const sessionService = require('../services/sessionService');
 
-
-//to set cookie
-const cookieParser = require("cookie-parser");
+router.use(express.json());
 //to encode cookie.
 const crypto = require("crypto");
 

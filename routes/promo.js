@@ -3,6 +3,8 @@ const router = express.Router();
 const pool = require('../database');
 const promoService = require('../services/promoService');
 
+router.use(express.json());
+
 router.get("/:promo_code", async (req,res)=>{
     try{
         const checkSession = req.cookies.session_id;

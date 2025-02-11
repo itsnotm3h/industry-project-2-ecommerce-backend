@@ -4,6 +4,7 @@ const pool = require('../database');
 const cartService = require('../services/cartService');
 const authenticate = require('../middlewares/authenticateWithJWT');
 
+router.use(express.json());
 
 router.get("/", async (req, res) => {
     try {

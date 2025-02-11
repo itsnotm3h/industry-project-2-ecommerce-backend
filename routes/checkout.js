@@ -5,6 +5,7 @@ const orderService = require('../services/orderService');
 const checkoutService = require('../services/checkoutService');
 const authenticate = require('../middlewares/authenticateWithJWT');
 
+
 router.post("/", authenticate, async (req,res)=>{
 
     try{

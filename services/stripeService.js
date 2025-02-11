@@ -22,7 +22,7 @@ function createLineItems(orderItems)
 return lineItems;
 }
 
-async function createCheckoutSession(userId,orderItems,orderId)
+async function createCheckoutSession(userId,orderItems,orderId,publicId)
 {
     const lineItems = createLineItems(orderItems);
     const session = await stripe.checkout.sessions.create({
@@ -33,7 +33,15 @@ async function createCheckoutSession(userId,orderItems,orderId)
         cancel_url:'http://localhost:5173/cart',
         metadata:{
             userId:userId,
-            orderId:orderId
+            orderId:orderId,
+            public_session_id:publicId
+        },
+        payment_intent_data: {
+            metadata: {  
+                userId:userId,
+                orderId:orderId,
+                public_session_id:publicId 
+            }
         }
     })
 

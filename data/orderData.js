@@ -56,7 +56,8 @@ async function getOrderData (orderId){
 
 async function updateOrderStatus (orderId, status)
 {
-    if(!['created','processing','completed','cancelled'].includes(status))
+    
+    if(!['pending', 'cancelled', 'pending_shipping','processing','payment_fail','payment_complete','shipped'].includes(status))
     {
         throw new Error("invalid status")
     }
@@ -65,8 +66,61 @@ async function updateOrderStatus (orderId, status)
 
 async function updateOrderSessionId (orderId,sessionId)
 {
-    await pool.query('UPDATE orders SET checkout_session_id = ? WHERE id= ?',[sessionId,orderId])
+    const connection = await pool.getConnection();
+    try{
+        await connection.beginTransaction();
+        await connection.query('UPDATE orders SET checkout_session_id = ? WHERE id= ?',[sessionId,orderId])
+    } catch(error)
+    {
+        await connection.rollback();
+        throw new Error(error.message)
+    }
+    finally{
+        connection.release();
+    }
 }
+
+
+
+async function updateStock(orderId){
+
+    const connection = await pool.getConnection();
+
+    //get the items from order_items to update where the QTY. 
+    const [ordersToUpdate] = await connection.query(`SELECT product_id, quantity FROM orders_items WHERE order_id=?`,[orderId]);
+
+    if(!ordersToUpdate || ordersToUpdate.length > 0 )
+        {
+            console.log("No orders found for update.");
+            return;
+        }
+
+        try {
+            for(const item of ordersToUpdate)
+                {
+                   await connection.query(`UPDATE products SET product_stock = product_stock - ? WHERE product_id = ? `,[item.quantity, item.product_id]);
+                }   
+                
+                await connection.commit();
+                
+        } catch(error) {
+            await connection.rollback();
+            throw new Error(error.message)
+
+        } finally {
+            connection.release();
+        }
+  
+
+    //Minus the qty. 
+    //update the product. 
+
+ 
+
+
+
+}
+
 
 module.exports = {
     createOrder,

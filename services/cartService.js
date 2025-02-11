@@ -12,7 +12,13 @@ async function addToCart(session_id,user_id,cartItems)
     await cartData.addToCart(session_id,user_id,cartItems);
 }
 
+async function deleteCartItems(session_id,user_id)
+{
+    return await cartData.deleteCartItems(session_id,user_id);
+}
+
 module.exports={
     getCart,
-    addToCart
+    addToCart,
+    deleteCartItems
 }

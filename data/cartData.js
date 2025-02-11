@@ -190,6 +190,24 @@ async function addToCart(session_id,user_id,cartItems) {
 
 }
 
+async function deleteCartItems (userId,sessionId){
+
+    const connection = await pool.getConnection();
+
+    try {
+        await connection.beginTransaction();
+        await connection.query(`DELETE FROM cart WHERE user_id =? AND public_session_id=?`, [userId,sessionId]);
+    }
+    catch(error)
+    {
+        console.log(error);
+        await connection.rollback();
+    } finally{
+        connection.release();
+    }
+
+}
+
 module.exports={
-    getCart,addToCart,getCart_user
+    getCart,addToCart,getCart_user,deleteCartItems
 }

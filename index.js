@@ -25,8 +25,8 @@ const app = express();
 const corsOptions = {
   origin: [process.env.LOCAL_URL, process.env.URL],   // Reference the environment variable
   credentials: true,  // Allow cookies to be sent
-  allowedHeaders: ["Content-Type", "Authorization", "Stripe-Signature"],// Ensure headers are allowed
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ["Content-Type", "Authorization", "Stripe-Signature","ngrok-skip-browser-warning"],// Ensure headers are allowed
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 };
 
 // Middleware
